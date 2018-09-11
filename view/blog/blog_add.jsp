@@ -148,7 +148,7 @@
      arr.push(UE.getEditor('editor').getContent());
      
      var content = arr.join("\n");
-     content = content.replace(new RegExp("<","g"),"<").replace(new RegExp(">","g"),">").replace(new RegExp("\"","g"),""");
+     content = content.replace(new RegExp("<","g"),"<").replace(new RegExp(">","g"),">").replace(new RegExp("\"","g"),"");
       $.ajax({
         type:"POST",
         url:"${ctx}/blog/save",
