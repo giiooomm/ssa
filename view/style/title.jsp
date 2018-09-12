@@ -13,6 +13,49 @@
     <script src="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="${ctx}/static/css/title/title.css"> 
 </head>
+<script>
+  $(function(){
+    loadmenu();
+  });
+  function loadmenu(){
+    $.ajax({
+      type:"POST",
+      dataType:"JSON",
+      data:{},
+      url:"${ctx}/sys/menu",
+      success:function(result){
+          $("#delni").remove(); 
+          for(var i=0;i<result.length;i++){
+            if(result[i].child.length > 0){
+              var parentli=document.createElement('li');
+              parentli.setAttribute("class","dropdown");
+              var str = "<a class='dropdown-toggle' data-toggle='dropdown' href='#'>"+result[i].menuName+"<span class='caret'></span></a>";
+              parentli.innerHTML = str;
+              var parentmenu=document.createElement('ul'); 
+              parentmenu.setAttribute("class","dropdown-menu");
+              var string =  "";     
+              for(var j=0;j<result[i].child.length;j++){             
+                var childmenu = document.createElement('li');
+                var strmenu = "<a href='${ctx}/"+result[i].child[j].menuUrl+"'>"+result[i].child[j].menuName+"</a>";             
+                childmenu.innerHTML = strmenu;
+                parentmenu.append(childmenu);
+              }
+              parentli.append(parentmenu);
+              $(".nav-tabs").append(parentli);   
+            }else{
+              var newLi = document.createElement('li');
+              var str = "<a href='${ctx}/"+result[i].menuUrl+"'>"+result[i].menuName+"</a>";
+              newLi.innerHTML = str;
+              $(".nav-tabs").append(newLi);
+            }          
+          }
+      },
+      error:function(result){
+         alert("失败");
+      }
+    });
+  }
+</script>
 <body>
 
     <nav class="navbar navbar-fixed-top my-navbar" role="navigation">
@@ -29,31 +72,7 @@
             </div>
         </div>	
 		<ul class="nav nav-tabs">
-			<li>
-				<a href="${ctx}/view/main.jsp">Home</a></li>
-			<li>
-				<a href="${ctx}/blog">Blog</a></li>
-			<li>
-				<a href="${ctx}/view/blog/blog_add.jsp">添加Blog</a></li>
-			<li>
-				<a href="#">VB.Net</a></li>
-			<li class="dropdown">
-				<a class="dropdown-toggle" data-toggle="dropdown" href="#">Java
-					<span class="caret"></span></a>
-				<ul class="dropdown-menu">
-					<li>
-						<a href="#">Swing</a></li>
-					<li>
-						<a href="#">jMeter</a></li>
-					<li>
-						<a href="#">EJB</a></li>
-					<li class="divider"></li>
-					<li>
-						<a href="#">分离的链接</a></li>
-				</ul>
-			</li>
-			<li>
-				<a href="#">PHP</a></li>
+        <li><a id="delni">你</a></li> 
 		</ul>
     </nav>
 

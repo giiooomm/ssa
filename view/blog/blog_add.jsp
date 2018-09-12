@@ -146,16 +146,23 @@
     //alert(${ctx});
     var arr = [];
      arr.push(UE.getEditor('editor').getContent());
-     
+     var title = $("#ss").val();
      var content = arr.join("\n");
      content = content.replace(new RegExp("<","g"),"<").replace(new RegExp(">","g"),">").replace(new RegExp("\"","g"),"");
       $.ajax({
         type:"POST",
+        dataType:"JSON",
         url:"${ctx}/blog/save",
-        data:{content:content},
+        data:{content:content,title:title},
         dataType:"json",
-        success:function(data){
-          alert("成功");
+        success:function(result){
+            
+           //JsonObject jsonObject = new JsonObject(result)
+          //var res = eval(result)
+          alert(result.result)
+        },
+        error:function(result){
+          alert(result.result)
         }
       }); 
     }
